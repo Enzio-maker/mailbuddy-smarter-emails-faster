@@ -69,7 +69,7 @@ export default function HeroSection() {
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <a
-            href="#pricing"
+            href="#demo"
             className="group inline-flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-button transition-all hover:opacity-90 hover:shadow-lg"
           >
             Probeer gratis
