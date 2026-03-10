@@ -8,7 +8,7 @@
   :root {
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-    /* Minimalist (default) — light, airy, #F5F7FA bg */
+    /* Premium SaaS — clean, light, professional */
     --background: 216 25% 97%;
     --foreground: 0 0% 12%;
 
@@ -58,67 +58,6 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  /* Theme: Premium SaaS — dark, bold */
-  .theme-saas {
-    --background: 225 30% 4%;
-    --foreground: 0 0% 96%;
-    --card: 225 25% 7%;
-    --card-foreground: 0 0% 96%;
-    --popover: 225 25% 7%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 216 99% 61%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 225 18% 12%;
-    --secondary-foreground: 0 0% 90%;
-    --muted: 225 18% 12%;
-    --muted-foreground: 225 10% 55%;
-    --accent: 216 60% 14%;
-    --accent-foreground: 216 99% 72%;
-    --border: 225 18% 14%;
-    --input: 225 18% 14%;
-    --ring: 216 99% 61%;
-    --hero-gradient: linear-gradient(135deg, hsl(216 99% 55%) 0%, hsl(260 80% 60%) 100%);
-    --surface-elevated: 225 25% 9%;
-    --surface-subtle: 225 28% 5%;
-    --text-secondary: 225 10% 50%;
-    --shadow-soft: 0 4px 24px -4px hsl(0 0% 0% / 0.5);
-    --shadow-card: 0 1px 3px hsl(0 0% 0% / 0.25), 0 8px 32px -8px hsl(0 0% 0% / 0.35);
-    --shadow-card-hover: 0 1px 3px hsl(0 0% 0% / 0.3), 0 16px 48px -8px hsl(0 0% 0% / 0.45);
-    --shadow-button: 0 2px 20px -2px hsl(216 99% 61% / 0.45);
-    --gradient-subtle: linear-gradient(180deg, hsl(225 30% 4%) 0%, hsl(225 25% 6%) 100%);
-  }
-
-  /* Theme: Warm & Menselijk — soft, inviting */
-  .theme-warm {
-    --background: 40 30% 97%;
-    --foreground: 30 25% 14%;
-    --card: 40 20% 99%;
-    --card-foreground: 30 25% 14%;
-    --popover: 40 20% 99%;
-    --popover-foreground: 30 25% 14%;
-    --primary: 216 75% 52%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 38 25% 92%;
-    --secondary-foreground: 30 25% 18%;
-    --muted: 38 18% 92%;
-    --muted-foreground: 30 12% 48%;
-    --accent: 216 55% 93%;
-    --accent-foreground: 216 75% 38%;
-    --border: 38 18% 86%;
-    --input: 38 18% 86%;
-    --ring: 216 75% 52%;
-    --radius: 1rem;
-    --hero-gradient: linear-gradient(135deg, hsl(216 75% 52%) 0%, hsl(195 65% 48%) 100%);
-    --surface-elevated: 40 20% 99%;
-    --surface-subtle: 40 28% 95%;
-    --text-secondary: 30 10% 50%;
-    --shadow-soft: 0 4px 24px -4px hsl(30 25% 14% / 0.06);
-    --shadow-card: 0 1px 3px hsl(30 25% 14% / 0.03), 0 8px 32px -8px hsl(30 25% 14% / 0.06);
-    --shadow-card-hover: 0 1px 3px hsl(30 25% 14% / 0.05), 0 12px 40px -8px hsl(30 25% 14% / 0.09);
-    --shadow-button: 0 2px 12px -2px hsl(216 75% 52% / 0.3);
-    --gradient-subtle: linear-gradient(180deg, hsl(40 30% 97%) 0%, hsl(40 20% 99%) 100%);
   }
 }
 
