@@ -1,19 +1,24 @@
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 
 const plans = [
   {
     name: "Gratis",
     price: "€0",
     period: "voor altijd",
-    desc: "Probeer MailBuddy zonder verplichtingen.",
-    features: ["5 mails per dag", "3 toonstijlen", "Geen creditcard nodig"],
+    desc: "Perfect om MailBuddy te proberen.",
+    features: [
+      "10 mails per maand",
+      "3 toonstijlen",
+      "Geen creditcard nodig",
+      "Werkt in elke browser",
+    ],
     cta: "Start gratis",
     featured: false,
   },
   {
-    name: "Pro",
-    price: "€9",
+    name: "Premium",
+    price: "€5",
     period: "per maand",
     desc: "Voor ondernemers die dagelijks mailen.",
     features: [
@@ -21,23 +26,10 @@ const plans = [
       "Alle toonstijlen",
       "Eigen bedrijfsnaam in antwoorden",
       "Prioriteit support",
+      "Nieuwe features als eerste",
     ],
     cta: "Start 14 dagen gratis",
     featured: true,
-  },
-  {
-    name: "Team",
-    price: "€19",
-    period: "per maand",
-    desc: "Voor kleine teams tot 5 personen.",
-    features: [
-      "Alles van Pro",
-      "Tot 5 gebruikers",
-      "Gedeelde toonstijlen",
-      "Facturatie op bedrijfsnaam",
-    ],
-    cta: "Neem contact op",
-    featured: false,
   },
 ];
 
@@ -51,55 +43,66 @@ export default function PricingSection() {
           viewport={{ once: true }}
           className="mb-16 text-center"
         >
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+          <span className="mb-4 inline-block text-sm font-bold uppercase tracking-widest text-primary">
+            Prijzen
+          </span>
+          <h2 className="text-3xl font-extrabold text-foreground md:text-4xl lg:text-5xl">
             Simpele, eerlijke prijzen
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Geen verborgen kosten. Opzeggen wanneer je wilt.
+          <p className="mx-auto mt-4 max-w-md text-lg text-muted-foreground">
+            Geen verborgen kosten. Geen lange contracten. Opzeggen wanneer je wilt.
           </p>
         </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="mx-auto grid max-w-3xl gap-8 md:grid-cols-2">
           {plans.map((plan, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={`relative rounded-2xl p-8 transition-all ${
+              transition={{ delay: i * 0.12 }}
+              className={`relative rounded-3xl p-8 lg:p-10 transition-all ${
                 plan.featured
-                  ? "border-2 border-primary bg-card shadow-card scale-[1.02]"
+                  ? "border-2 border-primary bg-card shadow-card scale-[1.03]"
                   : "glass-card"
               }`}
             >
               {plan.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-primary-foreground">
-                  Populairst
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-primary px-5 py-1.5 text-xs font-bold text-primary-foreground shadow-button">
+                  Meest gekozen
                 </span>
               )}
               <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold text-foreground">{plan.price}</span>
+              <div className="mt-5 flex items-baseline gap-1">
+                <span className="text-5xl font-extrabold tracking-tight text-foreground">
+                  {plan.price}
+                </span>
                 <span className="text-muted-foreground">/ {plan.period}</span>
               </div>
               <p className="mt-2 text-sm text-muted-foreground">{plan.desc}</p>
-              <ul className="mt-6 space-y-3">
+
+              <ul className="mt-8 space-y-3.5">
                 {plan.features.map((f, fi) => (
-                  <li key={fi} className="flex items-start gap-2 text-sm text-foreground">
+                  <li
+                    key={fi}
+                    className="flex items-start gap-3 text-sm text-foreground"
+                  >
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     {f}
                   </li>
                 ))}
               </ul>
+
               <button
-                className={`mt-8 w-full rounded-full py-3 text-sm font-semibold transition-all ${
+                className={`group mt-8 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-bold transition-all ${
                   plan.featured
                     ? "bg-primary text-primary-foreground shadow-button hover:opacity-90"
-                    : "border border-border text-foreground hover:bg-secondary"
+                    : "border border-border bg-card text-foreground hover:shadow-card"
                 }`}
               >
                 {plan.cta}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
             </motion.div>
           ))}

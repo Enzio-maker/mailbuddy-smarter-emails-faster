@@ -4,21 +4,24 @@ import { useState } from "react";
 const examples = [
   {
     label: "Offerte opvolgen",
-    incoming: "Hoi, ik heb je offerte ontvangen maar wil er nog even over nadenken. Kan ik volgende week reageren?",
+    incoming:
+      "Hoi, ik heb je offerte ontvangen maar wil er nog even over nadenken. Kan ik volgende week reageren?",
     reply:
       "Hoi Mark,\n\nGeen probleem! Neem rustig de tijd. Mocht je nog vragen hebben over de offerte, dan hoor ik het graag. Ik houd de plek voor je vrij tot vrijdag.\n\nVriendelijke groet,\nSanne",
     tone: "Vriendelijk",
   },
   {
     label: "Klacht afhandelen",
-    incoming: "Ik ben niet tevreden over het resultaat. Dit is niet wat we hadden afgesproken.",
+    incoming:
+      "Ik ben niet tevreden over het resultaat. Dit is niet wat we hadden afgesproken.",
     reply:
       "Beste Lisa,\n\nDank je voor je eerlijke feedback. Ik begrijp dat het resultaat niet aan je verwachtingen voldoet en dat vervelend is. Laten we deze week even bellen zodat we dit samen kunnen oplossen.\n\nMet vriendelijke groet,\nTom",
     tone: "Professioneel",
   },
   {
     label: "Samenwerking afwijzen",
-    incoming: "We willen graag met je samenwerken aan ons nieuwe project. Ben je beschikbaar?",
+    incoming:
+      "We willen graag met je samenwerken aan ons nieuwe project. Ben je beschikbaar?",
     reply:
       "Hoi Jasper,\n\nWat leuk dat jullie aan mij denken! Helaas zit mijn planning de komende maanden vol. Ik raad je aan om contact op te nemen met [collega]. Die doet vergelijkbaar werk en is uitstekend.\n\nSucces!\nEva",
     tone: "Hartelijk",
@@ -37,7 +40,7 @@ export default function ExamplesSection() {
   const ex = examples[active];
 
   return (
-    <section className="section-padding bg-surface-subtle">
+    <section id="examples" className="section-padding section-alt">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -45,23 +48,27 @@ export default function ExamplesSection() {
           viewport={{ once: true }}
           className="mb-16 text-center"
         >
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+          <span className="mb-4 inline-block text-sm font-bold uppercase tracking-widest text-primary">
+            Voorbeelden
+          </span>
+          <h2 className="text-3xl font-extrabold text-foreground md:text-4xl lg:text-5xl">
             Zie het in actie
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Echte situaties, echte antwoorden.
+          <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
+            Echte situaties, professionele antwoorden. In seconden.
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        {/* Tab buttons */}
+        <div className="mb-10 flex flex-wrap justify-center gap-2">
           {examples.map((e, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                 active === i
                   ? "bg-primary text-primary-foreground shadow-button"
-                  : "bg-secondary text-secondary-foreground hover:bg-accent"
+                  : "border border-border bg-card text-foreground hover:shadow-card"
               }`}
             >
               {e.label}
@@ -69,6 +76,7 @@ export default function ExamplesSection() {
           ))}
         </div>
 
+        {/* Example cards */}
         <motion.div
           key={active}
           initial={{ opacity: 0, y: 12 }}
@@ -76,22 +84,28 @@ export default function ExamplesSection() {
           transition={{ duration: 0.3 }}
           className="grid gap-6 md:grid-cols-2"
         >
-          <div className="glass-card rounded-2xl p-6">
-            <span className="mb-3 inline-block rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-              Ontvangen e-mail
-            </span>
-            <p className="whitespace-pre-line text-muted-foreground">{ex.incoming}</p>
+          <div className="glass-card rounded-2xl p-6 lg:p-8">
+            <div className="mb-4 flex items-center gap-2">
+              <span className="rounded-full bg-secondary px-3 py-1 text-xs font-bold text-secondary-foreground">
+                Ontvangen e-mail
+              </span>
+            </div>
+            <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
+              {ex.incoming}
+            </p>
           </div>
-          <div className="glass-card rounded-2xl border-primary/20 p-6">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
+          <div className="glass-card rounded-2xl border-primary/20 p-6 lg:p-8">
+            <div className="mb-4 flex items-center gap-2">
+              <span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">
                 MailBuddy antwoord
               </span>
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+              <span className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-0.5 text-xs font-semibold text-primary">
                 {ex.tone}
               </span>
             </div>
-            <p className="whitespace-pre-line text-foreground">{ex.reply}</p>
+            <p className="whitespace-pre-line leading-relaxed text-foreground">
+              {ex.reply}
+            </p>
           </div>
         </motion.div>
       </div>
