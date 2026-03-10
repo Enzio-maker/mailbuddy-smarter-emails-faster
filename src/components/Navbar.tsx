@@ -1,22 +1,66 @@
 import { Mail } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { label: "Features", href: "#features" },
-  { label: "Voorbeelden", href: "#examples" },
-  { label: "Prijzen", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Home", href: "/" },
+  { label: "Tool", href: "/tool" },
+  { label: "Voorbeelden", href: "/#examples" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Handle hash scrolling when navigating from another page
+  useEffect(() => {
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [location]);
+
+  const renderLink = (link: typeof navLinks[0], mobile = false) => {
+    const isHash = link.href.includes("#");
+    const className = mobile
+      ? "text-base font-medium text-foreground"
+      : "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground";
+
+    if (isHash) {
+      return (
+        <Link
+          key={link.href}
+          to={link.href}
+          onClick={() => mobile && setMobileOpen(false)}
+          className={className}
+        >
+          {link.label}
+        </Link>
+      );
+    }
+
+    return (
+      <Link
+        key={link.href}
+        to={link.href}
+        onClick={() => mobile && setMobileOpen(false)}
+        className={className}
+      >
+        {link.label}
+      </Link>
+    );
+  };
 
   return (
     <header
@@ -27,36 +71,24 @@ export default function Navbar() {
       }`}
     >
       <div className="container-narrow flex h-16 items-center justify-between px-6 md:h-18">
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-button">
             <Mail className="h-4 w-4 text-primary-foreground" />
           </div>
           <span className="text-lg font-extrabold text-foreground tracking-tight">MailBuddy</span>
-        </a>
+        </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => renderLink(link))}
         </nav>
 
-        {/* Desktop CTA */}
-        <a
-          href="#pricing"
+        <Link
+          to="/tool"
           className="hidden rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-button transition-all hover:opacity-90 md:inline-flex"
         >
           Probeer gratis
-        </a>
+        </Link>
 
-        {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="flex h-9 w-9 flex-col items-center justify-center gap-1.5 md:hidden"
@@ -68,27 +100,17 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="border-t border-border bg-background px-6 pb-6 pt-4 md:hidden">
           <nav className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="text-base font-medium text-foreground"
-              >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="#pricing"
+            {navLinks.map((link) => renderLink(link, true))}
+            <Link
+              to="/tool"
               onClick={() => setMobileOpen(false)}
               className="mt-2 rounded-full bg-primary px-6 py-3 text-center text-sm font-semibold text-primary-foreground shadow-button"
             >
               Probeer gratis
-            </a>
+            </Link>
           </nav>
         </div>
       )}

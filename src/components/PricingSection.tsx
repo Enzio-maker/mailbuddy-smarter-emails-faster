@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const plans = [
   {
@@ -9,11 +10,12 @@ const plans = [
     desc: "Perfect om MailBuddy te proberen.",
     features: [
       "10 mails per maand",
-      "3 toonstijlen",
+      "4 toonstijlen",
       "Geen creditcard nodig",
       "Werkt in elke browser",
     ],
     cta: "Start gratis",
+    ctaLink: "/tool",
     featured: false,
   },
   {
@@ -23,12 +25,13 @@ const plans = [
     desc: "Voor ondernemers die dagelijks mailen.",
     features: [
       "Onbeperkte mails",
-      "Alle toonstijlen",
-      "Eigen bedrijfsnaam in antwoorden",
+      "Snellere AI",
+      "Extra toonstijlen",
       "Prioriteit support",
       "Nieuwe features als eerste",
     ],
-    cta: "Start 14 dagen gratis",
+    cta: "Bekijk Premium",
+    ctaLink: "/pricing",
     featured: true,
   },
 ];
@@ -84,17 +87,15 @@ export default function PricingSection() {
 
               <ul className="mt-8 space-y-3.5">
                 {plan.features.map((f, fi) => (
-                  <li
-                    key={fi}
-                    className="flex items-start gap-3 text-sm text-foreground"
-                  >
+                  <li key={fi} className="flex items-start gap-3 text-sm text-foreground">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     {f}
                   </li>
                 ))}
               </ul>
 
-              <button
+              <Link
+                to={plan.ctaLink}
                 className={`group mt-8 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-bold transition-all ${
                   plan.featured
                     ? "bg-primary text-primary-foreground shadow-button hover:opacity-90"
@@ -103,7 +104,7 @@ export default function PricingSection() {
               >
                 {plan.cta}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
+              </Link>
             </motion.div>
           ))}
         </div>

@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Send, Mail, MessageSquare, Heart, Briefcase, Zap, Sun, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { Sparkles, Send, Mail, MessageSquare, Heart, Briefcase, Zap, Sun, Loader2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
 const tones = [
@@ -11,13 +10,21 @@ const tones = [
   { id: "casual", label: "Luchtig", Icon: Sun, color: "text-emerald-500" },
 ];
 
-export default function DemoSection() {
+export default function ToolSection() {
   const [selectedTone, setSelectedTone] = useState("friendly");
   const [email, setEmail] = useState("");
   const [extraInfo, setExtraInfo] = useState("");
   const [reply, setReply] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(reply);
+    setCopied(true);
+    toast.success("Gekopieerd naar klembord!");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleGenerate = async () => {
     if (!email.trim()) {
@@ -27,6 +34,7 @@ export default function DemoSection() {
 
     setIsLoading(true);
     setReply("");
+    setCopied(false);
     abortRef.current = new AbortController();
 
     try {
@@ -92,30 +100,11 @@ export default function DemoSection() {
   };
 
   return (
-    <section id="demo" className="section-padding">
+    <section className="px-6 pb-20 md:px-8 md:pb-28">
       <div className="container-narrow">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground">
-            <Sparkles className="h-3.5 w-3.5" />
-            Probeer het zelf
-          </span>
-          <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl mt-4">
-            Ervaar MailBuddy <span className="gradient-text">in actie</span>
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
-            Plak een e-mail, kies je toon en zie direct het resultaat.
-          </p>
-        </motion.div>
-
-        <motion.div
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="glass-card rounded-2xl overflow-hidden"
         >
@@ -192,18 +181,34 @@ export default function DemoSection() {
                 ) : (
                   <Send className="h-5 w-5" />
                 )}
-                {isLoading ? "Bezig met genereren..." : "Genereer antwoord"}
+                {isLoading ? "MailBuddy is bezig met je antwoord…" : "Genereer antwoord"}
               </button>
             </div>
 
             {/* Right: Output */}
             <div className="p-6 md:p-8 flex flex-col">
-              <label className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2">
-                <Sparkles className="h-4 w-4 text-primary" />
-                Gegenereerd antwoord
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  Gegenereerd antwoord
+                </label>
+                {reply && (
+                  <button
+                    onClick={handleCopy}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
+                    {copied ? "Gekopieerd" : "Kopiëren"}
+                  </button>
+                )}
+              </div>
               <div className="flex-1 rounded-xl border border-input bg-background p-4 min-h-[280px]">
-                {reply ? (
+                {isLoading && !reply ? (
+                  <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground gap-3">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <p className="text-sm">MailBuddy is bezig met je antwoord…</p>
+                  </div>
+                ) : reply ? (
                   <pre className="whitespace-pre-wrap text-sm text-foreground font-sans leading-relaxed">
                     {reply}
                   </pre>
