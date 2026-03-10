@@ -21,7 +21,7 @@ const items = [
 
 export default function PrivacySection() {
   return (
-    <section className="section-padding bg-surface-subtle">
+    <section className="section-padding">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -29,10 +29,13 @@ export default function PrivacySection() {
           viewport={{ once: true }}
           className="mb-16 text-center"
         >
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+          <span className="mb-4 inline-block text-sm font-bold uppercase tracking-widest text-primary">
+            Privacy
+          </span>
+          <h2 className="text-3xl font-extrabold text-foreground md:text-4xl lg:text-5xl">
             Jouw privacy, onze prioriteit
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-md text-lg text-muted-foreground">
             We nemen je gegevens serieus. Altijd.
           </p>
         </motion.div>
@@ -47,11 +50,11 @@ export default function PrivacySection() {
               transition={{ delay: i * 0.1 }}
               className="glass-card rounded-2xl p-8 text-center"
             >
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
                 <item.icon className="h-6 w-6" />
               </div>
               <h3 className="mb-2 text-lg font-bold text-foreground">{item.title}</h3>
-              <p className="text-muted-foreground">{item.desc}</p>
+              <p className="leading-relaxed text-muted-foreground">{item.desc}</p>
             </motion.div>
           ))}
         </div>
