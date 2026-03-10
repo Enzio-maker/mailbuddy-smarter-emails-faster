@@ -1,28 +1,95 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Send, Mail, MessageSquare } from "lucide-react";
+import { Sparkles, Send, Mail, MessageSquare, Heart, Briefcase, Zap, Sun, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const tones = [
-  { id: "friendly", label: "Vriendelijk", icon: "😊" },
-  { id: "formal", label: "Formeel", icon: "👔" },
-  { id: "direct", label: "Direct", icon: "🎯" },
-  { id: "casual", label: "Luchtig", icon: "✌️" },
+  { id: "friendly", label: "Vriendelijk", Icon: Heart, color: "text-pink-500" },
+  { id: "formal", label: "Formeel", Icon: Briefcase, color: "text-primary" },
+  { id: "direct", label: "Direct", Icon: Zap, color: "text-amber-500" },
+  { id: "casual", label: "Luchtig", Icon: Sun, color: "text-emerald-500" },
 ];
 
 export default function DemoSection() {
   const [selectedTone, setSelectedTone] = useState("friendly");
   const [email, setEmail] = useState("");
   const [extraInfo, setExtraInfo] = useState("");
-  const [generated, setGenerated] = useState(false);
+  const [reply, setReply] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const abortRef = useRef<AbortController | null>(null);
 
-  const sampleReply =
-    selectedTone === "friendly"
-      ? "Hoi Lisa,\n\nBedankt voor je bericht! Wat leuk dat je interesse hebt in een samenwerking. Ik ben zeker beschikbaar in week 12 en zou het heel fijn vinden om even te bellen over de mogelijkheden.\n\nZal ik dinsdag of woensdag voorstellen? Dan kunnen we alles rustig doornemen.\n\nGroetjes,\nJan"
-      : selectedTone === "formal"
-        ? "Geachte mevrouw De Vries,\n\nHartelijk dank voor uw bericht. Met genoegen bevestig ik mijn beschikbaarheid in week 12 voor een kennismakingsgesprek omtrent een mogelijke samenwerking.\n\nZou het u schikken om op dinsdag of woensdag een afspraak in te plannen?\n\nMet vriendelijke groet,\nJan Bakker"
-        : selectedTone === "direct"
-          ? "Hi Lisa,\n\nJa, ik ben beschikbaar in week 12. Dinsdag of woensdag werkt het beste. Laat maar weten welke dag en tijd je voorkeur heeft.\n\nGr,\nJan"
-          : "Hey Lisa! 👋\n\nSuper dat je mailt! Week 12 past prima bij mij. Zullen we dinsdag of woensdag even bellen? Dan spreken we alles door.\n\nLaat maar weten!\n\nJan";
+  const handleGenerate = async () => {
+    if (!email.trim()) {
+      toast.error("Plak eerst een e-mail om te beantwoorden.");
+      return;
+    }
+
+    setIsLoading(true);
+    setReply("");
+    abortRef.current = new AbortController();
+
+    try {
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-email`;
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ email: email.trim(), tone: selectedTone, extraInfo: extraInfo.trim() }),
+        signal: abortRef.current.signal,
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({ error: "Onbekende fout" }));
+        toast.error(err.error || "Er ging iets mis.");
+        setIsLoading(false);
+        return;
+      }
+
+      const reader = resp.body?.getReader();
+      if (!reader) throw new Error("No stream");
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulated = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+          let line = buffer.slice(0, newlineIndex);
+          buffer = buffer.slice(newlineIndex + 1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") break;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              accumulated += content;
+              setReply(accumulated);
+            }
+          } catch {
+            buffer = line + "\n" + buffer;
+            break;
+          }
+        }
+      }
+    } catch (e: any) {
+      if (e.name !== "AbortError") {
+        console.error(e);
+        toast.error("Er ging iets mis bij het genereren.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section id="demo" className="section-padding">
@@ -72,7 +139,7 @@ export default function DemoSection() {
                 </label>
                 <textarea
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value); setGenerated(false); }}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Plak hier de e-mail die je hebt ontvangen..."
                   className="w-full min-h-[160px] rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none transition-shadow"
                 />
@@ -85,7 +152,7 @@ export default function DemoSection() {
                 </label>
                 <textarea
                   value={extraInfo}
-                  onChange={(e) => { setExtraInfo(e.target.value); setGenerated(false); }}
+                  onChange={(e) => setExtraInfo(e.target.value)}
                   placeholder="Geef extra context of instructies mee, bijv. 'Verwijs naar factuur #123' of 'Ik ben beschikbaar op dinsdag'..."
                   className="w-full min-h-[80px] rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none transition-shadow"
                 />
@@ -95,29 +162,37 @@ export default function DemoSection() {
               <div>
                 <label className="text-sm font-semibold text-foreground mb-3 block">Kies je toon</label>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {tones.map((tone) => (
-                    <button
-                      key={tone.id}
-                      onClick={() => { setSelectedTone(tone.id); setGenerated(false); }}
-                      className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-all ${
-                        selectedTone === tone.id
-                          ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/30"
-                          : "border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
-                      }`}
-                    >
-                      <span>{tone.icon}</span>
-                      {tone.label}
-                    </button>
-                  ))}
+                  {tones.map((tone) => {
+                    const Icon = tone.Icon;
+                    return (
+                      <button
+                        key={tone.id}
+                        onClick={() => setSelectedTone(tone.id)}
+                        className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-all ${
+                          selectedTone === tone.id
+                            ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/30"
+                            : "border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                        }`}
+                      >
+                        <Icon className={`h-4 w-4 ${selectedTone === tone.id ? tone.color : ""}`} />
+                        {tone.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               <button
-                onClick={() => setGenerated(true)}
-                className="w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-primary px-6 py-4 text-base font-bold text-primary-foreground shadow-button transition-all hover:opacity-90 hover:shadow-lg"
+                onClick={handleGenerate}
+                disabled={isLoading}
+                className="w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-primary px-6 py-4 text-base font-bold text-primary-foreground shadow-button transition-all hover:opacity-90 hover:shadow-lg disabled:opacity-70"
               >
-                <Send className="h-4.5 w-4.5" />
-                Genereer antwoord
+                {isLoading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Send className="h-5 w-5" />
+                )}
+                {isLoading ? "Bezig met genereren..." : "Genereer antwoord"}
               </button>
             </div>
 
@@ -128,14 +203,10 @@ export default function DemoSection() {
                 Gegenereerd antwoord
               </label>
               <div className="flex-1 rounded-xl border border-input bg-background p-4 min-h-[280px]">
-                {generated ? (
-                  <motion.pre
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="whitespace-pre-wrap text-sm text-foreground font-sans leading-relaxed"
-                  >
-                    {sampleReply}
-                  </motion.pre>
+                {reply ? (
+                  <pre className="whitespace-pre-wrap text-sm text-foreground font-sans leading-relaxed">
+                    {reply}
+                  </pre>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground gap-3">
                     <div className="h-12 w-12 rounded-2xl bg-muted flex items-center justify-center">
