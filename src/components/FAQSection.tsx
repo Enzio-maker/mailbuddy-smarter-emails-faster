@@ -4,8 +4,8 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    q: "Wat is MailBuddy precies?",
-    a: "MailBuddy is een simpele online tool waarmee je in seconden een professioneel e-mailantwoord kunt laten schrijven. Je plakt een ontvangen e-mail, kiest je gewenste toon, en MailBuddy genereert direct een antwoord dat je kunt kopiëren en versturen.",
+    q: "Wat is MailMint precies?",
+    a: "MailMint is een simpele online tool waarmee je in seconden een professioneel e-mailantwoord kunt laten schrijven. Je plakt een ontvangen e-mail, kiest je gewenste toon, en MailMint genereert direct een antwoord dat je kunt kopiëren en versturen.",
   },
   {
     q: "Hoe werkt het gratis plan?",
@@ -17,15 +17,15 @@ const faqs = [
   },
   {
     q: "Moet ik iets installeren?",
-    a: "Nee! MailBuddy werkt volledig in je browser. Geen downloads, geen plugins, geen technische kennis nodig. Gewoon openen en beginnen.",
+    a: "Nee! MailMint werkt volledig in je browser. Geen downloads, geen plugins, geen technische kennis nodig. Gewoon openen en beginnen.",
   },
   {
-    q: "Kan ik MailBuddy opzeggen wanneer ik wil?",
+    q: "Kan ik MailMint opzeggen wanneer ik wil?",
     a: "Ja, je kunt je Premium-abonnement op elk moment opzeggen. Geen opzegtermijn, geen kleine lettertjes. Je houdt toegang tot het einde van je betaalperiode.",
   },
   {
-    q: "Voor wie is MailBuddy bedoeld?",
-    a: "MailBuddy is gemaakt voor zzp'ers, freelancers, coaches, fotografen, consultants, VA's en andere kleine ondernemers die professioneler willen mailen zonder er veel tijd aan kwijt te zijn.",
+    q: "Voor wie is MailMint bedoeld?",
+    a: "MailMint is gemaakt voor zzp'ers, freelancers, coaches, fotografen, consultants, VA's en andere kleine ondernemers die professioneler willen mailen zonder er veel tijd aan kwijt te zijn.",
   },
 ];
 

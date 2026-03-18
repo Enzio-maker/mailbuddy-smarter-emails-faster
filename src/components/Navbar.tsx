@@ -75,7 +75,7 @@ export default function Navbar() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-button">
             <Mail className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-extrabold text-foreground tracking-tight">MailBuddy</span>
+          <span className="text-lg font-extrabold text-foreground tracking-tight">MailMint</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

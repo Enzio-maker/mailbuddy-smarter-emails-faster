@@ -37,7 +37,7 @@ export default function UpgradePage() {
               Premium
             </span>
             <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl mt-4">
-              Upgrade naar <span className="gradient-text">MailBuddy Premium</span>
+              Upgrade naar <span className="gradient-text">MailMint Premium</span>
             </h1>
             <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
               Onbeperkt professionele e-mails schrijven voor slechts €5 per maand.

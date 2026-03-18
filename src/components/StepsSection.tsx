@@ -6,7 +6,7 @@ const steps = [
     icon: ClipboardPaste,
     step: "01",
     title: "Plak je mail",
-    description: "Kopieer de e-mail die je hebt ontvangen en plak deze in MailBuddy. Meer hoef je niet te doen.",
+    description: "Kopieer de e-mail die je hebt ontvangen en plak deze in MailMint. Meer hoef je niet te doen.",
   },
   {
     icon: Palette,
@@ -17,7 +17,7 @@ const steps = [
   {
     icon: Sparkles,
     step: "03",
-    title: "MailBuddy schrijft je antwoord",
+    title: "MailMint schrijft je antwoord",
     description: "Binnen enkele seconden heb je een professioneel antwoord klaar om te kopiëren en te versturen.",
   },
 ];

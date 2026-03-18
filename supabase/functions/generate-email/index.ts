@@ -6,7 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SYSTEM_PROMPT = `Jij bent MailBuddy, een AI-assistent die ondernemers helpt om snel professionele e-mailantwoorden te schrijven.
+const SYSTEM_PROMPT = `Jij bent MailMint, een AI-assistent die ondernemers helpt om snel professionele e-mailantwoorden te schrijven.
 
 Regels voor elk antwoord:
 1. Reageer altijd in dezelfde taal als de inkomende mail.

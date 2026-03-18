@@ -43,7 +43,7 @@ export default function FeaturesSection() {
             Features
           </span>
           <h2 className="text-3xl font-extrabold text-foreground md:text-4xl lg:text-5xl">
-            Waarom ondernemers kiezen voor MailBuddy
+            Waarom ondernemers kiezen voor MailMint
           </h2>
         </motion.div>
 

@@ -15,7 +15,7 @@ export default function ToolPage() {
             Schrijf in seconden een <span className="gradient-text">professioneel antwoord</span>
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
-            Plak je mail, kies een toon en MailBuddy schrijft een professioneel antwoord.
+            Plak je mail, kies een toon en MailMint schrijft een professioneel antwoord.
           </p>
         </div>
       </section>

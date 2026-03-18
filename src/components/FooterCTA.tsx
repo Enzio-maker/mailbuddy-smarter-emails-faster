@@ -23,7 +23,7 @@ export default function FooterCTA() {
                 Klaar om slimmer te mailen?
               </h2>
               <p className="mx-auto mt-5 max-w-md text-lg text-primary-foreground/80">
-                Start vandaag nog gratis en ontdek hoeveel tijd MailBuddy je bespaart.
+                Start vandaag nog gratis en ontdek hoeveel tijd MailMint je bespaart.
               </p>
               <Link
                 to="/tool"
@@ -48,7 +48,7 @@ export default function FooterCTA() {
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
                 <Mail className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="text-lg font-extrabold text-foreground">MailBuddy</span>
+              <span className="text-lg font-extrabold text-foreground">MailMint</span>
             </Link>
 
             <nav className="flex flex-wrap items-center justify-center gap-6">
@@ -61,7 +61,7 @@ export default function FooterCTA() {
 
           <div className="mt-8 border-t border-border pt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              © 2026 MailBuddy. Alle rechten voorbehouden.
+              © 2026 MailMint. Alle rechten voorbehouden.
             </p>
           </div>
         </div>

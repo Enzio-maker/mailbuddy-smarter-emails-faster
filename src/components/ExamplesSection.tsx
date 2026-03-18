@@ -97,7 +97,7 @@ export default function ExamplesSection() {
           <div className="glass-card rounded-2xl border-primary/20 p-6 lg:p-8">
             <div className="mb-4 flex items-center gap-2">
               <span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">
-                MailBuddy antwoord
+                MailMint antwoord
               </span>
               <span className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-0.5 text-xs font-semibold text-primary">
                 {ex.tone}
