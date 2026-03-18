@@ -115,7 +115,7 @@ export default function ToolSection() {
               <span className="h-3 w-3 rounded-full bg-[hsl(45_80%_55%)]" />
               <span className="h-3 w-3 rounded-full bg-[hsl(140_50%_50%)]" />
             </div>
-            <span className="ml-3 text-xs font-medium text-muted-foreground tracking-wide">MailBuddy</span>
+            <span className="ml-3 text-xs font-medium text-muted-foreground tracking-wide">MailMint</span>
           </div>
 
           <div className="grid lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-border">
@@ -181,7 +181,7 @@ export default function ToolSection() {
                 ) : (
                   <Send className="h-5 w-5" />
                 )}
-                {isLoading ? "MailBuddy is bezig met je antwoord…" : "Genereer antwoord"}
+                {isLoading ? "MailMint is bezig met je antwoord…" : "Genereer antwoord"}
               </button>
             </div>
 
@@ -206,7 +206,7 @@ export default function ToolSection() {
                 {isLoading && !reply ? (
                   <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground gap-3">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                    <p className="text-sm">MailBuddy is bezig met je antwoord…</p>
+                    <p className="text-sm">MailMint is bezig met je antwoord…</p>
                   </div>
                 ) : reply ? (
                   <pre className="whitespace-pre-wrap text-sm text-foreground font-sans leading-relaxed">

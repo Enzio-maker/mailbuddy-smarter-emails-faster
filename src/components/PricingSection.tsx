@@ -7,7 +7,7 @@ const plans = [
     name: "Gratis",
     price: "€0",
     period: "voor altijd",
-    desc: "Perfect om MailBuddy te proberen.",
+    desc: "Perfect om MailMint te proberen.",
     features: [
       "10 mails per maand",
       "4 toonstijlen",
