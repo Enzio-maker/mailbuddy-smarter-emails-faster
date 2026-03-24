@@ -1,45 +1,69 @@
 import express from "express";
 import cors from "cors";
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
+import { createClient } from "@supabase/supabase-js";
 
 const app = express();
-app.use(cors());
+const PORT = process.env.PORT || 3001;
+
+app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:5173" }));
 app.use(express.json());
 
-// Maak verbinding met OpenAI
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-// Endpoint waar jouw website straks naartoe stuurt
-app.post("/generate", async (req, res) => {
-  const { email, tone } = req.body;
+// Health check
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
+
+// AI Chat endpoint
+app.post("/api/ai", async (req, res) => {
+  const { messages, context } = req.body;
+
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: "messages array is required" });
+  }
 
   try {
-    const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: `Je bent een AI die e-mails herschrijft in de toon: ${tone}.`
-        },
-        {
-          role: "user",
-          content: email
-        }
-      ]
+    const systemPrompt = `You are MailBuddy, an AI email assistant. 
+Your job is to help users write better emails faster.
+You can:
+- Draft new emails based on a brief description
+- Improve tone, clarity, and professionalism of existing emails
+- Suggest subject lines
+- Shorten or expand email drafts
+- Translate emails to a different language or tone (formal/informal)
+${context ? `\nExtra context about the user: ${context}` : ""}
+Always respond in the same language the user writes in.
+Keep responses concise and actionable.`;
+
+    const response = await anthropic.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: messages.map((m) => ({
+        role: m.role,
+        content: m.content,
+      })),
     });
 
-    const reply = response.choices[0].message.content;
-    res.json({ reply });
+    const text = response.content
+      .filter((block) => block.type === "text")
+      .map((block) => block.text)
+      .join("\n");
+
+    res.json({
+      reply: text,
+      usage: response.usage,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Er ging iets mis." });
+    console.error("Anthropic API error:", error);
+    res.status(500).json({ error: "AI service unavailable. Please try again." });
   }
 });
 
-// Start server
-app.listen(3000, () => {
-  console.log("Server draait op poort 3000");
+app.listen(PORT, () => {
+  console.log(`MailBuddy backend running on port ${PORT}`);
 });
-
